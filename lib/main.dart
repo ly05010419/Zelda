@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
   }
@@ -56,10 +57,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       setState(() {});
     });
     nameAnimation = Tween(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(parent: animationController, curve: Interval(0, 0.5)));
+        CurvedAnimation(parent: animationController, curve: Interval(0, 0.8)));
 
-    opacityAnimation = Tween(begin: 0.85, end: 1.0).animate(CurvedAnimation(
-        parent: animationController, curve: Interval(0.0, 0.3)));
+    opacityAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController, curve: Interval(0.4, 1.0)));
 
     textAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
         parent: animationController, curve: Interval(0.5, 0.8)));
@@ -75,14 +76,28 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         alignment: Alignment.center,
         child: Stack(
           children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(80),
-                  bottomRight: Radius.circular(10),
-                  topRight: Radius.circular(80),
-                  topLeft: Radius.circular(10)),
-              child: Opacity(
-                opacity: 1,
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black26,
+                      spreadRadius: 4,
+                      offset: Offset(4, 4),
+                      blurRadius: 10)
+                ],
+                color: Colors.black,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(80),
+                    bottomRight: Radius.circular(10),
+                    topRight: Radius.circular(80),
+                    topLeft: Radius.circular(10)),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(80),
+                    bottomRight: Radius.circular(10),
+                    topRight: Radius.circular(80),
+                    topLeft: Radius.circular(10)),
                 child: Container(
                   width: width,
                   height: width * 1.2,
@@ -99,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 child: Transform.translate(
                   offset: Offset(0.0, 20 - (20 * nameAnimation.value)),
                   child: Opacity(
-                    opacity: 1,
+                    opacity: opacityAnimation.value,
                     child: Text(
                       imageList[currentImage].name,
                       style: TextStyle(
@@ -115,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 child: Transform.translate(
                   offset: Offset(0.0, 20 - (20 * textAnimation.value)),
                   child: Opacity(
-                    opacity: 1,
+                    opacity: opacityAnimation.value,
                     child: Text(
                       "The Legend of Zelda Breath of the Wild",
                       style: TextStyle(
